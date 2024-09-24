@@ -9,5 +9,6 @@ I have 13 number in Table 1. Tasks for students.
 Which corresponds to Tic-tac-toe 3x3 game, that uses XML as config file.
 
 ## Details 
-I'll use python as main program language. Hardware server will be ESP32-WROOM32. 
-And technology to communicate between client and server will be Serial ports.
+I'll use C#(client) and C++(server) programing languages. Hardware server will be ESP32-WROOM32. 
+And technology to communicate between client and server will be UART(Simulated serial port).
+Also i'll use Arduino IDE to flash bytecode into ESP32.

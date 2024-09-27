@@ -1,0 +1,8 @@
+# User-specific files
+
+*.user
+
+# folders
+
+.vs/
+bin/

@@ -1,7 +1,9 @@
+// Set up communication speed same as client
+const int baud_rate = 115200;
+
 void setup() {
-  // Start the UART communication
-  Serial.begin(115200);
-  Serial.println("ESP32 is ready to communicate.");
+  // Start the UART communication with same speed as client
+  Serial.begin(baud_rate);
 }
 
 void loop() {
@@ -9,11 +11,9 @@ void loop() {
   if (Serial.available()) {
     // Read incoming message from client
     String received_message = Serial.readStringUntil('\n');
-
+    
+    // Modify recieved message and send it back to client
     String modified_message = received_message + " - Hello from ESP32!";
-
-    // Send the modified message back to the client
     Serial.println(modified_message);
-    delay(1000); // Optional delay for stability
   }
 }

@@ -19,8 +19,18 @@ namespace TTTClient
         {
             InitializeComponent();
 
-            // For now: requires manual COM-port selection
-            SerialPort serial = new SerialPort("COM10", 115200);
+            // Fill comboBox1 on initialization
+            fill_comboBox1();
+        }
+
+        // Send and recieve message if COM-Port selected
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Set up communication speed same as server
+            const int baud_rate = 115200;
+
+            // Create chosen serial port object
+            SerialPort serial = new SerialPort(comboBox1.Text, baud_rate);
 
             try
             {
@@ -51,6 +61,20 @@ namespace TTTClient
                     serial.Close();
                     label4.Text = "Serial port closed.";
                 }
+            }
+        }
+
+        // Fill comboBox1 with available COM-Ports
+        private void fill_comboBox1()
+        {       
+            // Make list of available COM-Ports
+            string[] available_ports = SerialPort.GetPortNames();
+
+            // Fill comboBox1
+            comboBox1.Items.Clear();
+            for (int i = 0; i < available_ports.Length; i++)
+            {
+                comboBox1.Items.Add(available_ports[i]);
             }
         }
     }

@@ -1,8 +1,24 @@
 # User-specific files
 
 *.user
+*.userosscache
+*.sln.docstates
 
-# folders
+# Compiled
+
+*.com
+*.class
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.cache
+*.suo
+# Include dlls if they’re in the NuGet packages directory
+!/packages/*/lib/*.dll
+
+# Directories
 
 .vs/
 bin/
+obj/

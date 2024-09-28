@@ -17,8 +17,17 @@
 # Include dlls if they’re in the NuGet packages directory
 !/packages/*/lib/*.dll
 
-# Directories
+# VS Directories
 
 .vs/
-bin/
-obj/
+
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+[Rr]eleases/
+
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/

@@ -1,38 +1,28 @@
 // Set up communication speed same as client
 const int baud_rate = 115200;
 
-char grid[9] = {
-  '0', '0', '0',
-  '0', '0', '0',
-  '0', '0', '0'
+char grid[] = {
+  'n', 'n', 'n',
+  'n', 'n', 'n',
+  'n', 'n', 'n'
 };
 
-char win = 'n';
 
-bool checkForWin(){
-  char C = 'o';
-  for (int k = 0; k < 2; k++){
-    // check horizontal lines
-    for(int i = 0; i < 3; i++){
-      if(grid[i*3] == grid[i*3 + 1] == grid[i*3 + 2] == C){
-        win = C;
-        return true;
-      }
-    }
-    // check vertical lines
-    for(int i = 0; i < 3; i++){
-      if(grid[i] == grid[i + 3] == grid[i + 6] == C){
-        win = C;
-        return true;
-      }
-    }
-    // check diagonals
-    if((grid[0] == grid[4] == grid[8] == C) || (grid[2] == grid[4] == grid[6] == C)){
-      win = C;
+bool checkForWin(char C){
+  // check horizontal lines
+  for(int i = 0; i < 3; i++)
+    if(grid[i*3] == C && grid[i*3 + 1] == C && grid[i*3 + 2] == C)
       return true;
-    }
-    C = 'x'
-  }
+
+  // check vertical lines
+  for(int i = 0; i < 3; i++)
+    if(grid[i] == C && grid[i + 3] == C && grid[i + 6] == C)
+      return true;
+
+  // check diagonals
+  if((grid[0] == C && grid[4] == C && grid[8] == C) || (grid[2] == C && grid[4] == C && grid[6] == C))
+    return true;
+
   return false;
 }
 
@@ -46,9 +36,14 @@ void loop() {
   if (Serial.available()) {
     // Read incoming message from client
     String received_message = Serial.readStringUntil('\n');
- 
-    // Modify recieved message and send it back to client
-    String modified_message = received_message + " - Hello from ESP32!";
-    Serial.println(modified_message);
+
+    String winner = "n";
+    if(checkForWin('o'))
+      winner = "o";
+    if(checkForWin('x'))
+      winner = "x";
+
+    String response = "Winner: " + winner;
+      Serial.println(response);
   }
 }

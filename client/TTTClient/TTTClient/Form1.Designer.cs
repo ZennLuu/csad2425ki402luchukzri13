@@ -43,7 +43,7 @@
             this.tt3 = new System.Windows.Forms.PictureBox();
             this.tt5 = new System.Windows.Forms.PictureBox();
             this.tt4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Grid = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.tt0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt1)).BeginInit();
@@ -53,13 +53,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.tt3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 46);
+            this.label1.Location = new System.Drawing.Point(8, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 0;
@@ -68,7 +68,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 74);
+            this.label2.Location = new System.Drawing.Point(8, 72);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 1;
@@ -77,7 +77,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 106);
+            this.label3.Location = new System.Drawing.Point(8, 104);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 2;
@@ -86,7 +86,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 143);
+            this.label4.Location = new System.Drawing.Point(8, 136);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 3;
@@ -95,7 +95,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 14);
+            this.label5.Location = new System.Drawing.Point(8, 8);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(92, 13);
             this.label5.TabIndex = 4;
@@ -105,11 +105,11 @@
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(108, 11);
+            this.comboBox1.Location = new System.Drawing.Point(104, 4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 5;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComPortsBox_SelectedIndexChanged);
             // 
             // tt0
             // 
@@ -192,21 +192,23 @@
             this.tt4.TabStop = false;
             this.tt4.Click += new System.EventHandler(this.tt4_Click);
             // 
-            // pictureBox1
+            // Grid
             // 
-            this.pictureBox1.Image = global::TTTClient.Properties.Resources.grid1;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 192);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(235, 235);
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.Grid.Location = new System.Drawing.Point(12, 192);
+            this.Grid.Name = "Grid";
+            this.Grid.Size = new System.Drawing.Size(235, 235);
+            this.Grid.TabIndex = 15;
+            this.Grid.TabStop = false;
+            this.Grid.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(257, 435);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
             this.Controls.Add(this.tt0);
             this.Controls.Add(this.tt8);
             this.Controls.Add(this.comboBox1);
@@ -222,9 +224,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tt5);
             this.Controls.Add(this.tt4);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.Grid);
             this.Name = "Form1";
-            this.Text = "Basic UART communication";
+            this.Text = "Tic-Tac-Toe";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tt0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt8)).EndInit();
@@ -235,7 +237,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tt3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,7 +260,7 @@
         private System.Windows.Forms.PictureBox tt1;
         private System.Windows.Forms.PictureBox tt8;
         private System.Windows.Forms.PictureBox tt0;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox Grid;
     }
 }
 

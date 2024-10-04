@@ -17,16 +17,29 @@ namespace TTTClient
 {
     public partial class Form1 : Form
     {
+        string projectDir, mediaDir;
         public Form1()
         {
             InitializeComponent();
 
+            // Setup media folder
+            projectDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Combine the base directory with the relative path to "media" folder
+            mediaDir = Path.Combine(Directory.GetParent(projectDir).Parent.Parent.FullName, "media");
+
+            // Setup icon
+            this.Icon = new Icon(Path.Combine(mediaDir, "circle.ico"));
+
+            // Setup grid
+            Grid.Image = Image.FromFile(Path.Combine(mediaDir, "grid.png"));
+
             // Fill comboBox1 on initialization
-            fill_comboBox1();
+            fill_ComPortsBox();
         }
 
         // Send and recieve message if COM-Port selected
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComPortsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Set up communication speed same as server
             const int baud_rate = 115200;
@@ -67,7 +80,7 @@ namespace TTTClient
         }
 
         // Fill comboBox1 with available COM-Ports
-        private void fill_comboBox1()
+        private void fill_ComPortsBox()
         {       
             // Make list of available COM-Ports
             string[] available_ports = SerialPort.GetPortNames();
@@ -84,10 +97,6 @@ namespace TTTClient
         {
             try
             {
-                string projectDir = AppDomain.CurrentDomain.BaseDirectory;
-
-                // Combine the base directory with the relative path to "media" folder
-                string mediaDir = Path.Combine(Directory.GetParent(projectDir).Parent.Parent.FullName, "media");
 
                 PictureBox pictureBox = (PictureBox)sender;
                 Image xImage = Image.FromFile(Path.Combine(mediaDir, "cross.png"));

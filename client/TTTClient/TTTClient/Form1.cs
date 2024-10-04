@@ -10,6 +10,8 @@ using System.Windows.Forms;
 
 using System.IO.Ports;
 using System.Threading;
+using System.Reflection.Emit;
+using System.IO;
 
 namespace TTTClient
 {
@@ -76,6 +78,81 @@ namespace TTTClient
             {
                 comboBox1.Items.Add(available_ports[i]);
             }
+        }
+        private bool cc = false;
+        private void place_cross(object sender)
+        {
+            try
+            {
+                string projectDir = AppDomain.CurrentDomain.BaseDirectory;
+
+                // Combine the base directory with the relative path to "media" folder
+                string mediaDir = Path.Combine(Directory.GetParent(projectDir).Parent.Parent.FullName, "media");
+
+                PictureBox pictureBox = (PictureBox)sender;
+                Image xImage = Image.FromFile(Path.Combine(mediaDir, "cross.png"));
+                Image oImage = Image.FromFile(Path.Combine(mediaDir, "circle.png"));
+                pictureBox.Image = cc ? xImage : oImage;
+                cc = !cc;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void tt0_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt1_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt2_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt3_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+
+        private void tt4_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt5_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt6_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt7_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+
+        private void tt8_Click(object sender, EventArgs e)
+        {
+            place_cross(sender);
+        }
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

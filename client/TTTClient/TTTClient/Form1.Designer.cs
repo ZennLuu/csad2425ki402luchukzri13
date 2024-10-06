@@ -44,6 +44,14 @@
             this.tt5 = new System.Windows.Forms.PictureBox();
             this.tt4 = new System.Windows.Forms.PictureBox();
             this.Grid = new System.Windows.Forms.PictureBox();
+            this.loadGame = new System.Windows.Forms.Button();
+            this.saveGame = new System.Windows.Forms.Button();
+            this.panelInGame = new System.Windows.Forms.Panel();
+            this.panelPlay = new System.Windows.Forms.Panel();
+            this.newGame = new System.Windows.Forms.Button();
+            this.gameMode = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.playGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tt0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt1)).BeginInit();
@@ -54,6 +62,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tt5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Grid)).BeginInit();
+            this.panelInGame.SuspendLayout();
+            this.panelPlay.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -68,7 +78,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 72);
+            this.label2.Location = new System.Drawing.Point(212, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 1;
@@ -77,7 +87,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 104);
+            this.label3.Location = new System.Drawing.Point(8, 60);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 2;
@@ -86,11 +96,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 136);
+            this.label4.Location = new System.Drawing.Point(160, 60);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(90, 13);
+            this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Response/Status";
+            this.label4.Text = "Response";
             // 
             // label5
             // 
@@ -105,14 +115,15 @@
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(104, 4);
+            this.comboBox1.Location = new System.Drawing.Point(100, 4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.Size = new System.Drawing.Size(149, 21);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComPortsBox_SelectedIndexChanged);
             // 
             // tt0
             // 
+            this.tt0.Enabled = false;
             this.tt0.Location = new System.Drawing.Point(12, 192);
             this.tt0.Name = "tt0";
             this.tt0.Size = new System.Drawing.Size(75, 75);
@@ -122,6 +133,7 @@
             // 
             // tt8
             // 
+            this.tt8.Enabled = false;
             this.tt8.Location = new System.Drawing.Point(172, 352);
             this.tt8.Name = "tt8";
             this.tt8.Size = new System.Drawing.Size(75, 75);
@@ -131,6 +143,7 @@
             // 
             // tt1
             // 
+            this.tt1.Enabled = false;
             this.tt1.Location = new System.Drawing.Point(92, 192);
             this.tt1.Name = "tt1";
             this.tt1.Size = new System.Drawing.Size(75, 75);
@@ -140,6 +153,7 @@
             // 
             // tt7
             // 
+            this.tt7.Enabled = false;
             this.tt7.Location = new System.Drawing.Point(92, 352);
             this.tt7.Name = "tt7";
             this.tt7.Size = new System.Drawing.Size(75, 75);
@@ -149,6 +163,7 @@
             // 
             // tt2
             // 
+            this.tt2.Enabled = false;
             this.tt2.Location = new System.Drawing.Point(172, 192);
             this.tt2.Name = "tt2";
             this.tt2.Size = new System.Drawing.Size(75, 75);
@@ -158,6 +173,7 @@
             // 
             // tt6
             // 
+            this.tt6.Enabled = false;
             this.tt6.Location = new System.Drawing.Point(12, 352);
             this.tt6.Name = "tt6";
             this.tt6.Size = new System.Drawing.Size(75, 75);
@@ -167,6 +183,7 @@
             // 
             // tt3
             // 
+            this.tt3.Enabled = false;
             this.tt3.Location = new System.Drawing.Point(12, 272);
             this.tt3.Name = "tt3";
             this.tt3.Size = new System.Drawing.Size(75, 75);
@@ -176,6 +193,7 @@
             // 
             // tt5
             // 
+            this.tt5.Enabled = false;
             this.tt5.Location = new System.Drawing.Point(172, 272);
             this.tt5.Name = "tt5";
             this.tt5.Size = new System.Drawing.Size(75, 75);
@@ -185,6 +203,7 @@
             // 
             // tt4
             // 
+            this.tt4.Enabled = false;
             this.tt4.Location = new System.Drawing.Point(92, 272);
             this.tt4.Name = "tt4";
             this.tt4.Size = new System.Drawing.Size(75, 75);
@@ -200,11 +219,96 @@
             this.Grid.TabIndex = 15;
             this.Grid.TabStop = false;
             // 
+            // loadGame
+            // 
+            this.loadGame.Location = new System.Drawing.Point(4, 32);
+            this.loadGame.Name = "loadGame";
+            this.loadGame.Size = new System.Drawing.Size(116, 23);
+            this.loadGame.TabIndex = 16;
+            this.loadGame.Text = "Load";
+            this.loadGame.UseVisualStyleBackColor = true;
+            this.loadGame.Click += new System.EventHandler(this.loadGame_Click);
+            // 
+            // saveGame
+            // 
+            this.saveGame.Location = new System.Drawing.Point(120, 4);
+            this.saveGame.Name = "saveGame";
+            this.saveGame.Size = new System.Drawing.Size(116, 23);
+            this.saveGame.TabIndex = 17;
+            this.saveGame.Text = "Save";
+            this.saveGame.UseVisualStyleBackColor = true;
+            this.saveGame.Click += new System.EventHandler(this.saveGame_Click);
+            // 
+            // panelInGame
+            // 
+            this.panelInGame.Controls.Add(this.saveGame);
+            this.panelInGame.Controls.Add(this.newGame);
+            this.panelInGame.Location = new System.Drawing.Point(12, 156);
+            this.panelInGame.Name = "panelInGame";
+            this.panelInGame.Size = new System.Drawing.Size(236, 32);
+            this.panelInGame.TabIndex = 18;
+            // 
+            // panelPlay
+            // 
+            this.panelPlay.Controls.Add(this.playGame);
+            this.panelPlay.Controls.Add(this.label6);
+            this.panelPlay.Controls.Add(this.loadGame);
+            this.panelPlay.Controls.Add(this.gameMode);
+            this.panelPlay.Location = new System.Drawing.Point(8, 128);
+            this.panelPlay.Name = "panelPlay";
+            this.panelPlay.Size = new System.Drawing.Size(244, 60);
+            this.panelPlay.TabIndex = 19;
+            // 
+            // newGame
+            // 
+            this.newGame.Location = new System.Drawing.Point(0, 4);
+            this.newGame.Name = "newGame";
+            this.newGame.Size = new System.Drawing.Size(116, 23);
+            this.newGame.TabIndex = 18;
+            this.newGame.Text = "New Game";
+            this.newGame.UseVisualStyleBackColor = true;
+            this.newGame.Click += new System.EventHandler(this.newGame_Click);
+            // 
+            // gameMode
+            // 
+            this.gameMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.gameMode.FormattingEnabled = true;
+            this.gameMode.Items.AddRange(new object[] {
+            "Man vs. Man",
+            "Man vs. AI",
+            "AI vs. AI"});
+            this.gameMode.Location = new System.Drawing.Point(100, 4);
+            this.gameMode.Name = "gameMode";
+            this.gameMode.Size = new System.Drawing.Size(141, 21);
+            this.gameMode.TabIndex = 20;
+            this.gameMode.SelectedIndexChanged += new System.EventHandler(this.gameMode_SelectedIndexChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(67, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Game mode:";
+            // 
+            // playGame
+            // 
+            this.playGame.Location = new System.Drawing.Point(124, 32);
+            this.playGame.Name = "playGame";
+            this.playGame.Size = new System.Drawing.Size(116, 23);
+            this.playGame.TabIndex = 21;
+            this.playGame.Text = "Play";
+            this.playGame.UseVisualStyleBackColor = true;
+            this.playGame.Click += new System.EventHandler(this.playGame_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(257, 435);
+            this.Controls.Add(this.panelPlay);
+            this.Controls.Add(this.panelInGame);
             this.Controls.Add(this.tt0);
             this.Controls.Add(this.tt8);
             this.Controls.Add(this.comboBox1);
@@ -235,6 +339,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.tt5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Grid)).EndInit();
+            this.panelInGame.ResumeLayout(false);
+            this.panelPlay.ResumeLayout(false);
+            this.panelPlay.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,6 +365,14 @@
         private System.Windows.Forms.PictureBox tt8;
         private System.Windows.Forms.PictureBox tt0;
         private System.Windows.Forms.PictureBox Grid;
+        private System.Windows.Forms.Button loadGame;
+        private System.Windows.Forms.Button saveGame;
+        private System.Windows.Forms.Panel panelInGame;
+        private System.Windows.Forms.Panel panelPlay;
+        private System.Windows.Forms.Button newGame;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox gameMode;
+        private System.Windows.Forms.Button playGame;
     }
 }
 

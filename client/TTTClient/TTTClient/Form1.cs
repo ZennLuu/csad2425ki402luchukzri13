@@ -34,6 +34,8 @@ namespace TTTClient
         {
             InitializeComponent();
 
+            panelInGame.Visible = false;
+
             // Setup media folder
             projectDir = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -45,7 +47,6 @@ namespace TTTClient
 
             // Setup grid
             Grid.Image = System.Drawing.Image.FromFile(Path.Combine(mediaDir, "grid.png"));
-
             FillGridWithPBoxes();
 
             // Fill comboBox1 on initialization
@@ -100,7 +101,6 @@ namespace TTTClient
             ExecCommand("MW_3");
         }
 
-
         private void tt4_Click(object sender, EventArgs e)
         {
             ExecCommand("MW_4");
@@ -139,6 +139,54 @@ namespace TTTClient
             grid[8] = tt8;
         }
 
+        private void newGame_Click(object sender, EventArgs e)
+        {
+            tt0.Enabled = false;
+            tt1.Enabled = false;
+            tt2.Enabled = false;
+            tt3.Enabled = false;
+            tt4.Enabled = false;
+            tt5.Enabled = false;
+            tt6.Enabled = false;
+            tt7.Enabled = false;
+            tt8.Enabled = false;
+
+            panelPlay.Visible = true;
+            panelInGame.Visible = false;
+            //ExecCommand("NW");
+        }
+
+        private void loadGame_Click(object sender, EventArgs e)
+        {
+            //ExecCommand("LW");
+        }
+
+        private void saveGame_Click(object sender, EventArgs e)
+        {
+            //ExecCommand("SW");
+        }
+
+        private void gameMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void playGame_Click(object sender, EventArgs e)
+        {
+            tt0.Enabled = true;
+            tt1.Enabled = true;
+            tt2.Enabled = true;
+            tt3.Enabled = true;
+            tt4.Enabled = true;
+            tt5.Enabled = true;
+            tt6.Enabled = true;
+            tt7.Enabled = true;
+            tt8.Enabled = true;
+
+            panelPlay.Visible = false;
+            panelInGame.Visible = true;
+        }
+
         private void ExecCommand(string command)
         {
             try
@@ -165,7 +213,7 @@ namespace TTTClient
             }
             catch (Exception ex)
             {
-                label4.Text = ex.Message;
+                MessageBox.Show(ex.Message);
             }
             finally {
                 if (serial.IsOpen)

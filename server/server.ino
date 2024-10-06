@@ -7,7 +7,6 @@ char grid[] = {
   'n', 'n', 'n'
 };
 
-
 bool checkForWin(char C){
   // check horizontal lines
   for(int i = 0; i < 3; i++)
@@ -35,15 +34,21 @@ void loop() {
   // Check if data is available to read
   if (Serial.available()) {
     // Read incoming message from client
-    String received_message = Serial.readStringUntil('\n');
+    String command = Serial.readStringUntil('\n');
+    String response;
 
-    String winner = "n";
-    if(checkForWin('o'))
-      winner = "o";
-    if(checkForWin('x'))
-      winner = "x";
-
-    String response = "Winner: " + winner;
-      Serial.println(response);
+    if(command[0] == 'M' && command[1] == 'W'){
+      int cell = command[3] - '0';
+      if(grid[cell] == 'n'){
+        response = "MA_";
+        response += cell;
+        Serial.println(response);
+        grid[cell] = 'e';
+      } else {
+        Serial.println("Cell is already occupied!");
+      }
+    } else {
+        Serial.println("Unidentified command!");
+    }
   }
 }

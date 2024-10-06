@@ -79,18 +79,18 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(8, 104);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
+            this.label3.Text = "Command";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(8, 136);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.Size = new System.Drawing.Size(90, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "label4";
+            this.label4.Text = "Response/Status";
             // 
             // label5
             // 
@@ -199,16 +199,12 @@
             this.Grid.Size = new System.Drawing.Size(235, 235);
             this.Grid.TabIndex = 15;
             this.Grid.TabStop = false;
-            this.Grid.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(257, 435);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = true;
             this.Controls.Add(this.tt0);
             this.Controls.Add(this.tt8);
             this.Controls.Add(this.comboBox1);
@@ -225,9 +221,10 @@
             this.Controls.Add(this.tt5);
             this.Controls.Add(this.tt4);
             this.Controls.Add(this.Grid);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Tic-Tac-Toe";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tt0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tt1)).EndInit();

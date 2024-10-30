@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTTClient", "TTTClient\TTTClient.csproj", "{2E525193-C837-4FC7-927D-85056940A802}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "client", "client.csproj", "{525F9047-8E37-4B72-AF4D-F69CA09590EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2E525193-C837-4FC7-927D-85056940A802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E525193-C837-4FC7-927D-85056940A802}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E525193-C837-4FC7-927D-85056940A802}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E525193-C837-4FC7-927D-85056940A802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{525F9047-8E37-4B72-AF4D-F69CA09590EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{525F9047-8E37-4B72-AF4D-F69CA09590EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{525F9047-8E37-4B72-AF4D-F69CA09590EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{525F9047-8E37-4B72-AF4D-F69CA09590EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A09109A4-B96F-4617-80D7-FB5948AB9EDB}
+		SolutionGuid = {F6CDF7C3-700D-4811-A5D9-F928D362C7BC}
 	EndGlobalSection
 EndGlobal

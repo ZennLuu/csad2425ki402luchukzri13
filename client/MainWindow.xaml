@@ -1,0 +1,48 @@
+﻿<Window x:Class="client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:client"
+        mc:Ignorable="d"
+        Title="Tic-tac-toe" Height="500" Width="285" ResizeMode="CanMinimize" Icon="/cross.png">
+    <Grid Height="450" Width="265">
+        <ToolBarPanel Width="255" VerticalAlignment="Top">
+            <Grid>
+                <Canvas x:Name="canvPlay" Height="202" Width="255" Visibility="Visible">
+                    <Label Content="Tic-Tac-Toe Game" HorizontalContentAlignment="Center" FontSize="25" Canvas.Left="10" Canvas.Top="10" Height="45" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Button Content="Load game" Canvas.Left="10" Canvas.Top="113" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="loadGmeClick"/>
+                    <Button Content="Play" Canvas.Left="10" Canvas.Top="148" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="playGmeClick"/>
+                </Canvas>
+                <Canvas x:Name="canvGameMode" Height="202" Width="255" Visibility="Hidden">
+                    <Label Content="Choose Gamemode" HorizontalContentAlignment="Center" FontSize="25" Canvas.Left="10" Canvas.Top="10" Height="45" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Button Content="Man vs. Man" Canvas.Left="10" Canvas.Top="78" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="gameModeMMClick"/>
+                    <Button Content="Man vs. AI" Canvas.Left="10" Canvas.Top="113" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="gameModeMAClick"/>
+                    <Button Content="AI vs. AI" Canvas.Left="10" Canvas.Top="148" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="gameModeAAClick"/>
+                </Canvas>
+                <Canvas x:Name="canvInGame" Height="202" Width="255" Visibility="Hidden">
+                    <Label Content="Tic-Tac-Toe Game" HorizontalContentAlignment="Center" FontSize="25" Canvas.Left="10" Canvas.Top="10" Height="45" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Label Content="P1: Man" HorizontalContentAlignment="Left" Canvas.Left="10" Canvas.Top="60" Height="30" Width="110"/>
+                    <Label Content="P2: AI" HorizontalContentAlignment="Right" Canvas.Left="135" Canvas.Top="60" Height="30" Width="110"/>
+                    <Label Content="Current move is up to P..." HorizontalContentAlignment="Center" Canvas.Left="10" Canvas.Top="78" Height="30" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <Button Content="Main menu" Canvas.Left="10" Canvas.Top="113" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="mainMenuClick"/>
+                    <Button Content="Save game" Canvas.Left="10" Canvas.Top="148" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="saveGmeClick"/>
+                </Canvas>
+            </Grid>
+        </ToolBarPanel>
+        <Line X1="90" Y1="205" X2="90" Y2="472" Stroke="Black" StrokeThickness="8"/>
+        <Line X1="175" Y1="205" X2="175" Y2="472" Stroke="Black" StrokeThickness="8"/>
+        <Line X1="10" Y1="285" X2="255" Y2="285" Stroke="Black" StrokeThickness="8"/>
+        <Line X1="10" Y1="370" X2="255" Y2="370" Stroke="Black" StrokeThickness="8"/>
+        <Image x:Name="g0" Height="75" Margin="10,0,0,170"  Width="75" MouseUp="g0MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g1" Height="75" Margin="95,0,0,170"  Width="75" MouseUp="g1MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g2" Height="75" Margin="180,0,0,170" Width="75" MouseUp="g2MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g3" Height="75" Margin="10,0,0,85"   Width="75" MouseUp="g3MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g4" Height="75" Margin="95,0,0,85"   Width="75" MouseUp="g4MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g5" Height="75" Margin="180,0,0,85"  Width="75" MouseUp="g5MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g6" Height="75" Margin="10,0,0,0"    Width="75" MouseUp="g6MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g7" Height="75" Margin="95,0,0,0"    Width="75" MouseUp="g7MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+        <Image x:Name="g8" Height="75" Margin="180,0,0,0"   Width="75" MouseUp="g8MouseUp" Source="/media/circle.jpg" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="Hand" IsEnabled="False"/>
+
+    </Grid>
+</Window>

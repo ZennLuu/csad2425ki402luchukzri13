@@ -17,12 +17,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup arduino-cli
-        shell: cmd
+        shell: pwsh
         run: |
-          if not exist "C:\arduino-cli" (
-            curl -L -o arduino-cli.zip "https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip"
-            powershell -Command "Expand-Archive -Path arduino-cli.zip -DestinationPath C:\"
-          )
+          if (-not (Test-Path "C:\arduino-cli\arduino-cli.exe")) {
+            Invoke-WebRequest -Uri "https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip" -OutFile "arduino-cli.zip"
+            Expand-Archive -Path "arduino-cli.zip" -DestinationPath "C:\arduino-cli"
+          }
         
       - name: Setup ESP32 core
         shell: cmd

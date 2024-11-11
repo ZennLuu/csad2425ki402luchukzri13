@@ -20,8 +20,8 @@ jobs:
         shell: cmd
         run: |
           if not exist "C:\arduino-cli" (
-            Invoke-WebRequest -Uri https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip -OutFile arduino-cli.zip
-            Expand-Archive -Path arduino-cli.zip -DestinationPath C:\
+            curl -L -o arduino-cli.zip https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+            powershell -Command "Expand-Archive -Path arduino-cli.zip -DestinationPath C:\"
           )
         
       - name: Setup ESP32 core

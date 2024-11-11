@@ -20,7 +20,7 @@ jobs:
         shell: cmd
         run: |
           if not exist "C:\arduino-cli" (
-            curl -L -o arduino-cli.zip https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip
+            curl -L -o arduino-cli.zip "https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip"
             powershell -Command "Expand-Archive -Path arduino-cli.zip -DestinationPath C:\"
           )
         

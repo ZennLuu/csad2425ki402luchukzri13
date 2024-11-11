@@ -1,4 +1,4 @@
-name: Build/Test Projects
+name: Build Project
 
 on:
   push:
@@ -18,10 +18,10 @@ jobs:
 
       - name: Setup arduino-cli
         run: |
-          if not exist "C:\arduino-cli" (
+          if (-not (Test-Path "C:\arduino-cli")) {
             Invoke-WebRequest -Uri https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip -OutFile arduino-cli.zip
             Expand-Archive -Path arduino-cli.zip -DestinationPath C:\
-          )
+          }
         
       - name: Setup ESP32 core
         run: |

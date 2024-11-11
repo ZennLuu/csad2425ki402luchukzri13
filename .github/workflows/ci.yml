@@ -22,14 +22,17 @@ jobs:
             Invoke-WebRequest -Uri https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip -OutFile arduino-cli.zip
             Expand-Archive -Path arduino-cli.zip -DestinationPath C:\
           }
-        
+
+      - name: Verify arduino-cli Path
+        run: Get-ChildItem -Path C:\arduino-cli -Recurse
+
       - name: Setup ESP32 core
         run: |
           C:\arduino-cli\arduino-cli.exe config init
           C:\arduino-cli\arduino-cli.exe config set board_manager.additional_urls "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
           C:\arduino-cli\arduino-cli.exe core update-index
           C:\arduino-cli\arduino-cli.exe core install esp32:esp32
-        
+
       - name: Compile ESP32 project
         run: |
           mkdir build

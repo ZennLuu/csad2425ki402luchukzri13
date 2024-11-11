@@ -36,7 +36,7 @@ jobs:
         shell: cmd
         run: |
           mkdir build
-          C:\arduino-cli\arduino-cli.exe compile --fbnq esp32:esp32:esp32 --output-dir build server/server.ino
+          C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 --output-dir build server/server.ino
       
       - name: Upload binaries
         uses: actions/upload-artifact@v3

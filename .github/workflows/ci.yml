@@ -1,0 +1,42 @@
+name: Build/Test Projects
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Setup arduino-cli
+        run: |
+          if not exist "C:\arduino-cli" (
+            Invoke-WebRequest -Uri https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip -OutFile arduino-cli.zip
+            Expand-Archive -Path arduino-cli.zip -DestinationPath C:\
+          )
+        
+      - name: Setup ESP32 core
+        run: |
+          C:\arduino-cli\arduino-cli.exe config init
+          C:\arduino-cli\arduino-cli.exe config set board_manager.additional_urls "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
+          C:\arduino-cli\arduino-cli.exe core update-index
+          C:\arduino-cli\arduino-cli.exe core install esp32:esp32
+        
+      - name: Compile ESP32 project
+        run: |
+          mkdir build
+          C:\arduino-cli\arduino-cli.exe compile -fbnq %Board% --output-dir build server/server.ino
+      
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: compiled-files
+          path: build/*.bin

@@ -1,6 +1,7 @@
 // Set up communication speed same as client
 const int baud_rate = 115200;
 
+// Initial state
 char currentMove = 'x';
 int gameMode = 0;
 bool gameOver = false;
@@ -9,7 +10,7 @@ char grid[] = {
   'n', 'n', 'n',
   'n', 'n', 'n'
 };
-
+// check win function
 char checkForWin(){
   const int winPatterns[8][3] = {
       {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
@@ -24,7 +25,7 @@ char checkForWin(){
   }
   return 'n';
 }
-
+// ceck draw function
 bool checkForDraw(){
   for(int i = 0; i < 9; i++){
     if(grid[i] == 'n')
@@ -32,7 +33,7 @@ bool checkForDraw(){
   }
   return true;
 }
-
+// reset grid function
 void resetGrid(){
   for(int i = 0; i < 9; i++)
     grid[i] = 'n';
@@ -44,6 +45,8 @@ void setup() {
   // Start the UART communication with same speed as client
   Serial.begin(baud_rate);
   pinMode(led, OUTPUT);
+
+  // Blink at start
   digitalWrite(led, HIGH);
   delay(1000);
   digitalWrite(led, LOW);
@@ -58,6 +61,9 @@ void loop() {
 
     String response;
 
+    // Set response based on request
+
+    // Move request
     if(command[0] == 'M' && command[1] == 'W') {
       if(!gameOver){
         if(gameMode == 0){ 
@@ -108,12 +114,16 @@ void loop() {
       } else {
         response = "Game already over!";
       }
-    } else if(command[0] == 'R' && command[1] == 'W') {
+    } 
+    // Reset request
+    else if(command[0] == 'R' && command[1] == 'W') {
         resetGrid();
         currentMove = 'x';
         gameOver = false;
         response = "RA";
-    } else if(command[0] == 'W' && command[1] == 'W'){
+    } 
+    // Win check request
+    else if(command[0] == 'W' && command[1] == 'W'){
         if(checkForWin() == 'x'){
           response = "WA_x";
           gameOver = true;  
@@ -128,7 +138,9 @@ void loop() {
         }
         else
           response = "WD";
-    } else if(command[0] == 'G' && command[1] == 'W') {
+    } 
+    // Gamemode set request
+    else if(command[0] == 'G' && command[1] == 'W') {
       int mode = command[3] - '0';
       if(0 <= mode <= 2){
         gameMode = mode;
@@ -136,9 +148,47 @@ void loop() {
       } else {
         response = "Invalid game mode!";
       }
+    } 
+    // Save game request
+    else if(command[0] == 'S' && command[1] == 'W') {
+      response = "SA_";
+      response += gameMode;
+      response += currentMove;
+      for(int i = 0; i < 9; i++){
+        response += grid[i];
+      }
+    } 
+    // Load game request
+    else if(command[0] == 'L' && command[1] == 'W') {
+      response = "LA";
+      int tempGameMode = command[3] - '0';
+      if (0 <= tempGameMode <= 2){
+        gameMode = tempGameMode;
+      } else {
+        response = "Invalid gamemode!";
+      }
+      if(command[4] == 'x'){
+        currentMove = 'x';
+      } else if (command[4] == 'o'){
+        currentMove ='o';
+      } else {
+        response = "Invalid currentMove!";
+      }
+      for(int i = 5; i < 14; i++){
+        if(command[i] == 'x'){
+          grid[i-5] = 'x';
+        } else if(command[i] == 'o'){
+          grid[i-5] = 'o';
+        } else if(command[i] == 'n'){
+          grid[i-5] = 'n';
+        } else {
+          response = "Invalid grid cells";
+        }
+      }
     } else {
         response = "Unidentified command!";
     }
+
     // Send response to client
     Serial.println(response);
 

@@ -14,6 +14,8 @@ using System.Reflection.Emit;
 using System.IO.Ports;
 using Microsoft.Win32;
 using System.Runtime.Versioning;
+using System.Xml;
+using System;
 
 namespace client
 {
@@ -23,31 +25,39 @@ namespace client
     [SupportedOSPlatform("windows")]
     public partial class MainWindow : Window
     {
-        private int gameMode = 0;
-        // Set up communication speed same as server
+        // Uninitialized Serial port
+        SerialPort? serial;
+        // Communication speed with server
         const int baud_rate = 115200;
 
-        // Create chosen serial port object
-        SerialPort? serial;
 
-        Image[] Grid = new Image[9];
-
+        // Base app directory
         DirectoryInfo basePath = new DirectoryInfo(AppContext.BaseDirectory);
 
+        // Grid for cells
+        Image[] Grid = new Image[9];
+
+        // Images for cells
         string pathO = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/circle.jpg";
         string pathX = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/cross.jpg";
         string pathBG = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/gBackground.jpg";
         BitmapImage imageX, imageO, imageBG;
-        
+
+        // Game mode
+        int gameMode = 0;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            // Setup images for cell
             imageX = new BitmapImage(new Uri(pathX));
             imageO = new BitmapImage(new Uri(pathO));
             imageBG = new BitmapImage(new Uri(pathBG));
+            // Reset grid to init state
             resetGame();
 
+            // Assign image components to grid
             Grid[0] = g0;
             Grid[1] = g1;
             Grid[2] = g2;
@@ -58,10 +68,11 @@ namespace client
             Grid[7] = g7;
             Grid[8] = g8;
 
+            // Connect to Server
             ConnectESP32();
         }
 
-        
+        // Grid cell click handlers
         private void g0MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(0);
@@ -107,6 +118,8 @@ namespace client
             makeMove(8);
         }
 
+        // Make move based on gamemode
+        // 2 Gamemode(AI vs AI) moves taken separately as different case in gameModeAA function
         private void makeMove(int cell)
         {
             if (gameMode == 0)
@@ -123,6 +136,8 @@ namespace client
                 checkForWin();
             }
         }
+        
+        // Fill cell of grid
         private void fillCell(string recCommand)
         {
             if (recCommand[0] == 'M' && recCommand[1] == 'A')
@@ -134,29 +149,145 @@ namespace client
 
         private void playGmeClick(object sender, RoutedEventArgs e)
         {
-            canvGameMode.Visibility = Visibility.Visible;
+            string recCommand = ExecCommand("RW");
 
-            canvPlay.Visibility = Visibility.Hidden;
-            canvInGame.Visibility = Visibility.Hidden;
+            if (recCommand[0] == 'R' && recCommand[1] == 'A')
+            {
+                canvGameMode.Visibility = Visibility.Visible;
+
+                canvPlay.Visibility = Visibility.Hidden;
+                canvInGame.Visibility = Visibility.Hidden;
+            }
         }
+        
+        // Save game into xml file
         private void saveGmeClick(object sender, RoutedEventArgs e)
         {
+            string recCommand = ExecCommand("SW");
+            if (recCommand[0] == 'S' && recCommand[1] == 'A') {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "Save Game State",
+                    Filter = "XML Files (*.xml)|*.xml",
+                    DefaultExt = "xml",
+                    FileName = "GameSave.xml"
+                };
 
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    if (!saveGameToFile(filePath, recCommand))
+                    {
+                        MessageBox.Show("Failed to save the game state.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
         }
 
+        // Load game from xml file
         private void loadGmeClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string Data;
 
-            // Set options for the file dialog (optional)
-            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            openFileDialog.Title = "Select a File";
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = "Load Game State",
+                Filter = "XML Files (*.xml)|*.xml",
+                DefaultExt = "xml"
+            };
 
-            // Show the dialog and check if the user selected a file
             if (openFileDialog.ShowDialog() == true)
             {
-                // Display the selected file path
-                MessageBox.Show($"Selected file: {openFileDialog.FileName}");
+                string filePath = openFileDialog.FileName;
+                if (loadGameFromFile(filePath, out Data))
+                {
+                    string recCommand = ExecCommand(Data);
+                    if (recCommand[0] == 'L' && recCommand[1] == 'A')
+                    {
+                        for (int i = 5; i < 14; i++)
+                        {
+                            if (Data[i] == 'x')
+                                Grid[i-5].Source = imageX;
+                            else if (Data[i] == 'o')
+                                Grid[i-5].Source = imageO;
+                            else
+                                Grid[i-5].Source = imageBG;
+                        }
+
+                        gameMode = Data[3] - '0';
+
+                        SetGameMode(gameMode);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Failed to load the game state.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private bool saveGameToFile(string filePath, string response)
+        {
+            try
+            {
+                using (XmlWriter writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true }))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("GameState");
+
+                    writer.WriteElementString("GameMode", response[3].ToString());
+
+                    writer.WriteElementString("CurrentMove", response[4].ToString());
+
+                    writer.WriteStartElement("Grid");
+                    for (int i = 5; i < 14; i++)
+                    {
+                        writer.WriteElementString("Cell", response[i].ToString());
+                    }
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+
+                    writer.WriteEndDocument();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        private bool loadGameFromFile(string filePath, out string DataToSent)
+        {
+            DataToSent = "LW_";
+            try
+            {
+                using (XmlReader reader = XmlReader.Create(filePath))
+                {
+                    while (reader.Read()) 
+                    {
+                        switch (reader.Name)
+                        {
+                            case "GameMode":
+                                DataToSent += reader.ReadElementContentAsString();
+                                break;
+                            case "CurrentMove":
+                                DataToSent += reader.ReadElementContentAsString();
+                                break;
+                            case "Cell":
+                                DataToSent += (reader.ReadElementContentAsString());
+                                break;
+                        }
+                    }
+                }
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
             }
         }
 
@@ -172,23 +303,21 @@ namespace client
 
         private void gameModeAAClick(object sender, RoutedEventArgs e)
         {
-            SetGameMode(2);
-            while (true) 
+            if (SetGameMode(2))
             {
-                fillCell(ExecCommand("MW"));
-                if (checkForWin())
-                    break;
+                while (true)
+                {
+                    fillCell(ExecCommand("MW"));
+                    if (checkForWin())
+                        break;
+                }
             }
         }
 
-        private void SetGameMode(int mode)
+        // Set gamemode and clear grid.
+        private bool SetGameMode(int mode)
         {
-            string recCommand = ExecCommand("RW");
-
-            if (!(recCommand[0] == 'R' && recCommand[1] == 'A'))
-                return;
-
-            recCommand = ExecCommand($"GW_{mode}");
+            string recCommand = ExecCommand($"GW_{mode}");
             
             if (recCommand[0] == 'G' && recCommand[1] == 'A')
             {
@@ -223,9 +352,13 @@ namespace client
                 g6.IsEnabled = true;
                 g7.IsEnabled = true;
                 g8.IsEnabled = true;
+
+                return true;
             }
+            return false;
         }
 
+        // Move to main menu
         private void mainMenuClick(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show(
@@ -248,6 +381,7 @@ namespace client
             }
         }
 
+        // Reset game state to initial
         private void resetGame()
         {
             g0.Source = imageBG;
@@ -271,6 +405,7 @@ namespace client
             g8.IsEnabled = false;
         }
 
+        // Check for win or draw
         private bool checkForWin()
         {
             string recCommand = ExecCommand("WW");
@@ -300,6 +435,7 @@ namespace client
             return false;
         }
         
+        // Find Server COM port
         private string FindCH340ComPort()
         {
             try
@@ -333,6 +469,7 @@ namespace client
             return ""; // Return null if no matching device is found
         }
         
+        // Connect to Server
         private void ConnectESP32()
         {
             if (FindCH340ComPort() != "")
@@ -361,11 +498,12 @@ namespace client
                 }
                 else
                 {
-                    //Application.Current.Shutdown();
+                    Application.Current.Shutdown();
                 }
             }
         }
 
+        // Send command to server and recieve response
         private string ExecCommand(string command)
         {
             if (serial != null)
@@ -389,7 +527,7 @@ namespace client
                         serial.Close();
                 }
             }
-            return "Serial port isnt opened.";
+            return "Serial port isnt initialized.";
         }
     } 
 }

@@ -1,11 +1,11 @@
 @echo off
 REM Exit on error
 setlocal enabledelayedexpansion
+
 set ESP32ProjectPath=..\server
 set Board=esp32:esp32:esp32
 set requiredCore=esp32:esp32
 
-:COM_CHECK
 REM Check for available COM port
 for /f "tokens=*" %%i in ('powershell -Command "Get-PnpDevice | Where-Object { $_.FriendlyName -like 'USB-SERIAL CH340*' -and $_.Status -eq 'OK' } | ForEach-Object { $_.FriendlyName }"') do (
     echo %%i | findstr "COM[0-9]" >nul
@@ -39,6 +39,7 @@ for /f "tokens=*" %%i in ('arduino-cli core list') do (
     )
 )
 
+REM Download core if required
 echo Core %requiredCore% is NOT installed. Installing it now...
 arduino-cli config init
 arduino-cli config set board_manager.additional_urls "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
@@ -59,3 +60,5 @@ arduino-cli upload -p %comPortNumber% --fqbn %Board% .
 cd ..\ci
 echo Server build process completed successfully.
 endlocal
+
+PAUSE

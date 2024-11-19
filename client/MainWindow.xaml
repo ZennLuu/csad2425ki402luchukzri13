@@ -22,8 +22,8 @@
                 </Canvas>
                 <Canvas x:Name="canvInGame" Height="202" Width="255" Visibility="Hidden">
                     <Label Content="Tic-Tac-Toe Game" HorizontalContentAlignment="Center" FontSize="25" Canvas.Left="10" Canvas.Top="10" Height="45" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                    <Label Content="P1: Man" HorizontalContentAlignment="Left" Canvas.Left="10" Canvas.Top="60" Height="30" Width="110"/>
-                    <Label Content="P2: AI" HorizontalContentAlignment="Right" Canvas.Left="135" Canvas.Top="60" Height="30" Width="110"/>
+                    <Label x:Name="p1Name" Content="P1: Man" HorizontalContentAlignment="Left" Canvas.Left="10" Canvas.Top="60" Height="30" Width="110"/>
+                    <Label x:Name="p2Name" Content="P2: AI" HorizontalContentAlignment="Right" Canvas.Left="135" Canvas.Top="60" Height="30" Width="110"/>
                     <Label Content="Current move is up to P..." HorizontalContentAlignment="Center" Canvas.Left="10" Canvas.Top="78" Height="30" Width="235" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                     <Button Content="Main menu" Canvas.Left="10" Canvas.Top="113" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="mainMenuClick"/>
                     <Button Content="Save game" Canvas.Left="10" Canvas.Top="148" HorizontalAlignment="Center" VerticalAlignment="Top" Width="235" Height="30" Click="saveGmeClick"/>

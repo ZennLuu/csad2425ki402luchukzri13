@@ -21,9 +21,8 @@ namespace client
     /// </summary>
     public partial class MainWindow : Window
     {
-        // If 0 - move for Player1, If 1 - for Player2
         private bool gameOver = false;
-
+        private int gameMode = 0;
         // Set up communication speed same as server
         const int baud_rate = 115200;
 
@@ -64,58 +63,73 @@ namespace client
         
         private void g0MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_0"));
-            checkForWin();
+            makeMove(0);
         }
 
         private void g1MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_1"));
-            checkForWin();
+            makeMove(1);
         }
 
         private void g2MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_2"));
-            checkForWin();
+            makeMove(2);
         }
 
         private void g3MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_3"));
-            checkForWin();
+            makeMove(3);
         }
 
         private void g4MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_4"));
-            checkForWin();
+            makeMove(4);
         }
 
         private void g5MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_5"));
-            checkForWin();
+            makeMove(5);
         }
 
         private void g6MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_6"));
-            checkForWin();
+            makeMove(6);
         }
 
         private void g7MouseUp(object sender, MouseButtonEventArgs e)
         {
-             fillCell(ExecCommand("MW_7"));
-            checkForWin();
+            makeMove(7);
         }
 
         private void g8MouseUp(object sender, MouseButtonEventArgs e)
         {
-            fillCell(ExecCommand("MW_8"));
-            checkForWin();
+            makeMove(8);
         }
 
+        private void makeMove(int cell)
+        {
+            if (gameMode == 0)
+            {
+                fillCell(ExecCommand($"MW_{cell}"));
+                checkForWin();
+            }
+            else if (gameMode == 1) 
+            {
+                fillCell(ExecCommand($"MW_{cell}"));
+                if (checkForWin())
+                    return;
+                fillCell(ExecCommand("MW"));
+                checkForWin();
+            }
+        }
+        private void fillCell(string recCommand)
+        {
+            if (recCommand[0] == 'M' && recCommand[1] == 'A')
+            {
+                int cell = recCommand[3] - '0';
+                Grid[cell].Source = recCommand[4] == 'x' ? imageX : imageO;
+            }
+        }
 
         private void playGmeClick(object sender, RoutedEventArgs e)
         {
@@ -124,6 +138,11 @@ namespace client
             canvPlay.Visibility = Visibility.Hidden;
             canvInGame.Visibility = Visibility.Hidden;
         }
+        private void saveGmeClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void loadGmeClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -142,44 +161,68 @@ namespace client
 
         private void gameModeMMClick(object sender, RoutedEventArgs e)
         {
-            canvInGame.Visibility = Visibility.Visible;
-
-            canvPlay.Visibility = Visibility.Hidden;
-            canvGameMode.Visibility = Visibility.Hidden;
-            gameModeChoosen();
+            SetGameMode(0);
         }
 
         private void gameModeMAClick(object sender, RoutedEventArgs e)
         {
-            canvInGame.Visibility = Visibility.Visible;
-
-            canvPlay.Visibility = Visibility.Hidden;
-            canvGameMode.Visibility = Visibility.Hidden;
-            gameModeChoosen();
+            SetGameMode(1);
         }
 
         private void gameModeAAClick(object sender, RoutedEventArgs e)
         {
-            canvInGame.Visibility = Visibility.Visible;
-
-            canvPlay.Visibility = Visibility.Hidden;
-            canvGameMode.Visibility = Visibility.Hidden;
-            gameModeChoosen();
+            SetGameMode(2);
+            while (true) 
+            {
+                fillCell(ExecCommand("MW"));
+                if (checkForWin())
+                    break;
+            }
         }
 
-        private void gameModeChoosen()
+        private void SetGameMode(int mode)
         {
-            g0.IsEnabled = true;
-            g1.IsEnabled = true;
-            g2.IsEnabled = true;
-            g3.IsEnabled = true;
-            g4.IsEnabled = true;
-            g5.IsEnabled = true;
-            g6.IsEnabled = true;
-            g7.IsEnabled = true;
-            g8.IsEnabled = true;
+            string recCommand = ExecCommand("RW");
 
-            ExecCommand("RW");
+            if (!(recCommand[0] == 'R' && recCommand[1] == 'A'))
+                return;
+
+            recCommand = ExecCommand($"GW_{mode}");
+            
+            if (recCommand[0] == 'G' && recCommand[1] == 'A')
+            {
+                gameMode = mode;
+                switch (gameMode)
+                {
+                    case 0:
+                        p1Name.Content = "P1: Man";
+                        p2Name.Content = "P2: Man";
+                        break;
+                    case 1:
+                        p1Name.Content = "P1: Man";
+                        p2Name.Content = "P2: AI";
+                        break;
+                    case 2:
+                        p1Name.Content = "P1: AI";
+                        p2Name.Content = "P2: AI";
+                        break;
+                }
+
+                canvInGame.Visibility = Visibility.Visible;
+
+                canvPlay.Visibility = Visibility.Hidden;
+                canvGameMode.Visibility = Visibility.Hidden;
+
+                g0.IsEnabled = true;
+                g1.IsEnabled = true;
+                g2.IsEnabled = true;
+                g3.IsEnabled = true;
+                g4.IsEnabled = true;
+                g5.IsEnabled = true;
+                g6.IsEnabled = true;
+                g7.IsEnabled = true;
+                g8.IsEnabled = true;
+            }
         }
 
         private void mainMenuClick(object sender, RoutedEventArgs e)
@@ -200,43 +243,6 @@ namespace client
                 if (recCommand[0] == 'R' && recCommand[1] == 'A')
                 {
                     resetGame();
-                }
-            }
-        }
-
-        private void saveGmeClick(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void ConnectESP32()
-        {
-            if (FindCH340ComPort() != "")
-            {
-                try
-                {
-                    string port = FindCH340ComPort();
-                    serial = new SerialPort(port, baud_rate);
-                    //l1.Content = $"Successfully connected on port: {port}";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-            else
-            {
-                MessageBoxResult result = MessageBox.Show(
-                "Failed to find ESP32. Retry?",
-                "Warning",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    ConnectESP32();
-                }
-                else
-                {
-                    //Application.Current.Shutdown();
                 }
             }
         }
@@ -266,16 +272,7 @@ namespace client
             gameOver = false;
         }
 
-        private void fillCell(string recCommand)
-        {
-            if (recCommand[0] == 'M' && recCommand[1] == 'A')
-            {
-                int cell = recCommand[3] - '0';
-                Grid[cell].Source = recCommand[4] == 'x' ? imageX : imageO;
-            }
-        }
-
-        private void checkForWin()
+        private bool checkForWin()
         {
             string recCommand = ExecCommand("WW");
             if (recCommand[0] == 'W' && recCommand[1] == 'A') 
@@ -287,9 +284,23 @@ namespace client
                     winMessage = "Player1 Wins!";
                 else
                     winMessage = "Player2 Wins!";
+                
                 gameOver = true;
+
+                g0.IsEnabled = false;
+                g1.IsEnabled = false;
+                g2.IsEnabled = false;
+                g3.IsEnabled = false;
+                g4.IsEnabled = false;
+                g5.IsEnabled = false;
+                g6.IsEnabled = false;
+                g7.IsEnabled = false;
+                g8.IsEnabled = false;
+
                 MessageBox.Show(winMessage, "Results", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
             }
+            return false;
         }
 
         private string FindCH340ComPort()
@@ -324,6 +335,39 @@ namespace client
 
             return ""; // Return null if no matching device is found
         }
+       
+        private void ConnectESP32()
+        {
+            if (FindCH340ComPort() != "")
+            {
+                try
+                {
+                    string port = FindCH340ComPort();
+                    serial = new SerialPort(port, baud_rate);
+                    //l1.Content = $"Successfully connected on port: {port}";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBoxResult result = MessageBox.Show(
+                "Failed to find ESP32. Retry?",
+                "Warning",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ConnectESP32();
+                }
+                else
+                {
+                    //Application.Current.Shutdown();
+                }
+            }
+        }
 
         private string ExecCommand(string command)
         {
@@ -331,7 +375,9 @@ namespace client
             {
                 try
                 {
-                    serial.Open();
+                    if(!serial.IsOpen)
+                        serial.Open();
+                    
                     serial.WriteLine(command);
 
                     return serial.ReadLine();

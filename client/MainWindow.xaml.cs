@@ -13,15 +13,16 @@ using System.IO;
 using System.Reflection.Emit;
 using System.IO.Ports;
 using Microsoft.Win32;
+using System.Runtime.Versioning;
 
 namespace client
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [SupportedOSPlatform("windows")]
     public partial class MainWindow : Window
     {
-        private bool gameOver = false;
         private int gameMode = 0;
         // Set up communication speed same as server
         const int baud_rate = 115200;
@@ -37,7 +38,7 @@ namespace client
         string pathX = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/cross.jpg";
         string pathBG = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/gBackground.jpg";
         BitmapImage imageX, imageO, imageBG;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -268,8 +269,6 @@ namespace client
             g6.IsEnabled = false;
             g7.IsEnabled = false;
             g8.IsEnabled = false;
-
-            gameOver = false;
         }
 
         private bool checkForWin()
@@ -284,8 +283,6 @@ namespace client
                     winMessage = "Player1 Wins!";
                 else
                     winMessage = "Player2 Wins!";
-                
-                gameOver = true;
 
                 g0.IsEnabled = false;
                 g1.IsEnabled = false;
@@ -302,7 +299,7 @@ namespace client
             }
             return false;
         }
-
+        
         private string FindCH340ComPort()
         {
             try
@@ -335,7 +332,7 @@ namespace client
 
             return ""; // Return null if no matching device is found
         }
-       
+        
         private void ConnectESP32()
         {
             if (FindCH340ComPort() != "")

@@ -19,9 +19,10 @@
 
 packages/
 
-# VS Directories
+# Directories
 
 .vs/
+documentation/
 
 # Build results
 

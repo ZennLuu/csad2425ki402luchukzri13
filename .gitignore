@@ -15,6 +15,10 @@
 *.cache
 *.suo
 
+# Other files
+
+*.html
+
 # packages
 
 packages/

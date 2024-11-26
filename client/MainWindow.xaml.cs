@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿/**
+ * @file MainWindow.xaml.cs
+ * @brief Interaction logic for MainWindow.xaml and client side communication.
+ */
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,33 +23,65 @@ using System;
 
 namespace client
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     [SupportedOSPlatform("windows")]
     public partial class MainWindow : Window
     {
-        // Uninitialized Serial port
+        /**
+         * @brief Serial port for communication.
+         */
         SerialPort? serial;
-        // Communication speed with server
+
+        /**
+         * @brief Communication speed for clinet(must be same as server's).
+         */
         const int baud_rate = 115200;
 
-
-        // Base app directory
+        /**
+         * @brief base path of application.
+         */
         DirectoryInfo basePath = new DirectoryInfo(AppContext.BaseDirectory);
 
-        // Grid for cells
+        /**
+         * @brief Grid filled with Images as cells.
+         */
         Image[] Grid = new Image[9];
 
-        // Images for cells
+        /**
+         * @brief O Image for cells.
+         */
         string pathO = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/circle.jpg";
-        string pathX = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/cross.jpg";
-        string pathBG = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/gBackground.jpg";
-        BitmapImage imageX, imageO, imageBG;
 
-        // Game mode
+        /**
+         * @brief X Image for cells.
+         */
+        string pathX = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/cross.jpg";
+
+        /**
+         * @brief Default Image for cells.
+         */
+        string pathBG = new DirectoryInfo(AppContext.BaseDirectory).Parent?.Parent?.Parent + "/media/gBackground.jpg";
+
+        /**
+         * @brief Image variable that will contain specific images.
+         */
+        BitmapImage imageX;
+        /**
+         * @brief Image variable that will contain specific images.
+         */
+        BitmapImage imageO;
+        /**
+         * @brief Image variable that will contain specific images.
+         */
+        BitmapImage imageBG;
+
+        /**
+         * @brief Game mode number(0 - Man vs Man, 1 - Man vs AI, 2 - AI vs AI).
+         */
         int gameMode = 0;
 
+        /**
+         * @brief Initialize starting fields and values. Try to connect to server.
+         */
         public MainWindow()
         {
             InitializeComponent();
@@ -57,7 +93,6 @@ namespace client
             // Reset grid to init state
             resetGame();
 
-            // Assign image components to grid
             Grid[0] = g0;
             Grid[1] = g1;
             Grid[2] = g2;
@@ -72,54 +107,91 @@ namespace client
             ConnectESP32();
         }
 
-        // Grid cell click handlers
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g0MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(0);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g1MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(1);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g2MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(2);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g3MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(3);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g4MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(4);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g5MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(5);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g6MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(6);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g7MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(7);
         }
-
+        /**
+         * @brief Grid cell MouseUp handler. Index of function identifies cell number.
+         * @param sender Image.
+         * @param e MouseUp.
+         */
         private void g8MouseUp(object sender, MouseButtonEventArgs e)
         {
             makeMove(8);
         }
-
-        // Make move based on gamemode
-        // 2 Gamemode(AI vs AI) moves taken separately as different case in gameModeAA function
+        /**
+         * @brief Make move based on gamemode value. AI vs AI(2) excluded due to different functionality.
+         * @param cell number of cell.
+         */
         private void makeMove(int cell)
         {
             if (gameMode == 0)
@@ -136,8 +208,11 @@ namespace client
                 checkForWin();
             }
         }
-        
-        // Fill cell of grid
+
+        /**
+         * @brief Fill cell based on servers response.
+         * @param recCommand response from server.
+         */
         private void fillCell(string recCommand)
         {
             if (recCommand[0] == 'M' && recCommand[1] == 'A')
@@ -146,7 +221,11 @@ namespace client
                 Grid[cell].Source = recCommand[4] == 'x' ? imageX : imageO;
             }
         }
-
+        /**
+         * @brief Reset game and show gamemode selection after play button click.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void playGmeClick(object sender, RoutedEventArgs e)
         {
             string recCommand = ExecCommand("RW");
@@ -159,8 +238,12 @@ namespace client
                 canvInGame.Visibility = Visibility.Hidden;
             }
         }
-        
-        // Save game into xml file
+
+        /**
+         * @brief Save game into xml file after save button click.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void saveGmeClick(object sender, RoutedEventArgs e)
         {
             string recCommand = ExecCommand("SW");
@@ -184,7 +267,11 @@ namespace client
             }
         }
 
-        // Load game from xml file
+        /**
+         * @brief Load game from xml file on button click.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void loadGmeClick(object sender, RoutedEventArgs e)
         {
             string Data;
@@ -217,6 +304,7 @@ namespace client
                         gameMode = Data[3] - '0';
 
                         SetGameMode(gameMode);
+                        checkForWin();
                     }
                 }
                 else
@@ -225,7 +313,12 @@ namespace client
                 }
             }
         }
-
+        /**
+         * @brief Write game data into xml file.
+         * @param filePath path for file.
+         * @param response server's response(data).
+         * @return save file status.
+         */
         private bool saveGameToFile(string filePath, string response)
         {
             try
@@ -258,7 +351,12 @@ namespace client
                 return false;
             }
         }
-
+        /**
+         * @brief Read game data from xml file
+         * @param filePath">path to file.
+         * @param DataToSent">variable for Data.
+         * @return read file status.
+         */
         private bool loadGameFromFile(string filePath, out string DataToSent)
         {
             DataToSent = "LW_";
@@ -290,17 +388,29 @@ namespace client
                 return false;
             }
         }
-
+        /**
+         * @brief Select Mav vs Man game mode.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void gameModeMMClick(object sender, RoutedEventArgs e)
         {
             SetGameMode(0);
         }
-
+        /**
+         * @brief Select Mav vs AI game mode.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void gameModeMAClick(object sender, RoutedEventArgs e)
         {
             SetGameMode(1);
         }
-
+        /**
+         * @brief Select AI vs AI game mode and start game(send move commands to server).
+         * @param sender Button.
+         * @param e Click.
+         */
         private void gameModeAAClick(object sender, RoutedEventArgs e)
         {
             if (SetGameMode(2))
@@ -313,8 +423,11 @@ namespace client
                 }
             }
         }
-
-        // Set gamemode and clear grid.
+        /**
+         * @brief Change some fields based on selected gamemode after servers confirmation.
+         * @param mode gamemode.
+         * @return Server's response to changing gamemode.
+         */
         private bool SetGameMode(int mode)
         {
             string recCommand = ExecCommand($"GW_{mode}");
@@ -358,7 +471,11 @@ namespace client
             return false;
         }
 
-        // Move to main menu
+        /**
+         * @brief Main menu button to show main canvas and reset the game.
+         * @param sender Button.
+         * @param e Click.
+         */
         private void mainMenuClick(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show(
@@ -381,7 +498,9 @@ namespace client
             }
         }
 
-        // Reset game state to initial
+        /**
+         * @brief Reset Grid cells into default values.
+         */
         private void resetGame()
         {
             g0.Source = imageBG;
@@ -405,7 +524,10 @@ namespace client
             g8.IsEnabled = false;
         }
 
-        // Check for win or draw
+        /**
+         * @brief Requests from server win status.
+         * @return If true shows win message in messagebox, else returns false.
+         */
         private bool checkForWin()
         {
             string recCommand = ExecCommand("WW");
@@ -434,8 +556,11 @@ namespace client
             }
             return false;
         }
-        
-        // Find Server COM port
+
+        /**
+         * @brief Finds COM-port with specified UART bridge controller(CH340) that's active.
+         * @return Name of COM-port or empty string.
+         */
         private string FindCH340ComPort()
         {
             try
@@ -466,10 +591,12 @@ namespace client
                 Console.WriteLine("An error occurred while querying for WMI data: " + e.Message);
             }
 
-            return ""; // Return null if no matching device is found
+            return ""; // Return nothing if no matching device is found.
         }
         
-        // Connect to Server
+        /**
+         * Try to connect to server recursively, if clicked YES in messagebox prompt, else exit the app.
+         */
         private void ConnectESP32()
         {
             if (FindCH340ComPort() != "")
@@ -503,7 +630,11 @@ namespace client
             }
         }
 
-        // Send command to server and recieve response
+        /**
+         * @brief Send command to server and read response.
+         * @param command command to server.
+         * @return server's response.
+         */
         private string ExecCommand(string command)
         {
             if (serial != null)

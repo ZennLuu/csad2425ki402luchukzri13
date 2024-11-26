@@ -15,13 +15,18 @@
 *.cache
 *.suo
 
+# Other files
+
+*.html
+
 # packages
 
 packages/
 
-# VS Directories
+# Directories
 
 .vs/
+documentation/
 
 # Build results
 

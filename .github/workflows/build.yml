@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup arduino-cli
-        uses: arduino/compile-sketches@v1.1.2
+        uses: arduino/compile-sketches@v1
         with:
             fqbn: "esp32:esp32:esp32"
             platforms: |

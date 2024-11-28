@@ -1,0 +1,33 @@
+name: Build Server
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Setup arduino-cli
+        uses: arduino/compile-sketches@v1.1.2
+        with:
+            fqbn: "esp32:esp32:esp32"
+            platforms: |
+              - name: esp32:esp32
+                source-url: https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+            sketch-paths: |
+              - server
+      
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: compiled-files
+          path: build/*.bin

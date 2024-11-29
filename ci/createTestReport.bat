@@ -74,8 +74,6 @@ if errorlevel 1 (
 REM Install python dependencies and read serial output from board by python script.
 pip install -r pyRequirements.txt
 python readSerial.py %comPortNumber%
-
 echo Test process completed successfully.
 endlocal
-
 PAUSE

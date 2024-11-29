@@ -226,29 +226,69 @@ String processCommand(String command) {
 }
 
 /**
- * @brief Test case: Check for win in a row
+ * @brief Test case: Check for win in a row 1
  */
-test(test_check_for_win_row) {
+test(test_check_for_win_row1) {
   resetGrid();
   grid[0] = 'x'; grid[1] = 'x'; grid[2] = 'x'; // Winning row
   assertEqual(checkForWin(), 'x');
 }
+/**
+ * @brief Test case: Check for win in a row 2
+ */
+test(test_check_for_win_row2) {
+  resetGrid();
+  grid[3] = 'x'; grid[4] = 'x'; grid[5] = 'x'; // Winning row
+  assertEqual(checkForWin(), 'x');
+}
+/**
+ * @brief Test case: Check for win in a row 3
+ */
+test(test_check_for_win_row3) {
+  resetGrid();
+  grid[6] = 'x'; grid[7] = 'x'; grid[8] = 'x'; // Winning row
+  assertEqual(checkForWin(), 'x');
+}
 
 /**
- * @brief Test case: Check for win in a column
+ * @brief Test case: Check for win in a column 1
  */
-test(test_check_for_win_column) {
+test(test_check_for_win_column1) {
   resetGrid();
   grid[0] = 'o'; grid[3] = 'o'; grid[6] = 'o'; // Winning column
   assertEqual(checkForWin(), 'o');
 }
+/**
+ * @brief Test case: Check for win in a column 2
+ */
+test(test_check_for_win_column2) {
+  resetGrid();
+  grid[1] = 'o'; grid[4] = 'o'; grid[7] = 'o'; // Winning column
+  assertEqual(checkForWin(), 'o');
+}
+/**
+ * @brief Test case: Check for win in a column 3
+ */
+test(test_check_for_win_column3) {
+  resetGrid();
+  grid[2] = 'o'; grid[5] = 'o'; grid[8] = 'o'; // Winning column
+  assertEqual(checkForWin(), 'o');
+}
 
 /**
- * @brief Test case: Check for win in a diagonal
+ * @brief Test case: Check for win in a diagonal 1
  */
-test(test_check_for_win_diagonal) {
+test(test_check_for_win_diagonal1) {
   resetGrid();
   grid[0] = 'x'; grid[4] = 'x'; grid[8] = 'x'; // Winning diagonal
+  assertEqual(checkForWin(), 'x');
+}
+/**
+ * @brief Test case: Check for win in a diagonal 2
+ */
+test(test_check_for_win_diagonal2) {
+  resetGrid();
+  grid[2] = 'x'; grid[4] = 'x'; grid[6] = 'x'; // Winning diagonal
   assertEqual(checkForWin(), 'x');
 }
 
@@ -310,13 +350,114 @@ test(test_process_reset_command) {
 }
 
 /**
- * @brief Test case: Process win check command
+ * @brief Test case: Process win check command 1
  */
-test(test_process_win_check_command) {
+test(test_process_win_check_command1) {
   resetGrid();
-  grid[0] = 'x'; grid[1] = 'x'; grid[2] = 'x'; // Winning row
+  grid[0] = 'x'; grid[1] = 'x'; grid[2] = 'x';
   String response = processCommand("WW");
   assertEqual(response, "WA_x");
+}
+/**
+ * @brief Test case: Process win check command 2
+ */
+test(test_process_win_check_command2) {
+  resetGrid();
+  grid[3] = 'x'; grid[4] = 'x'; grid[5] = 'x';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_x");
+}
+/**
+ * @brief Test case: Process win check command 3
+ */
+test(test_process_win_check_command3) {
+  resetGrid();
+  grid[6] = 'x'; grid[7] = 'x'; grid[8] = 'x';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_x");
+}
+/**
+ * @brief Test case: Process win check command 4
+ */
+test(test_process_win_check_command4) {
+  resetGrid();
+  grid[0] = 'o'; grid[1] = 'o'; grid[2] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_o");
+}
+/**
+ * @brief Test case: Process win check command 5
+ */
+test(test_process_win_check_command5) {
+  resetGrid();
+  grid[0] = 'o'; grid[1] = 'o'; grid[2] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_o");
+}
+/**
+ * @brief Test case: Process win check command 6
+ */
+test(test_process_win_check_command6) {
+  resetGrid();
+  grid[0] = 'o'; grid[1] = 'o'; grid[2] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_o");
+}
+/**
+ * @brief Test case: Process win check command 7
+ */
+test(test_process_win_check_command7) {
+  resetGrid();
+  grid[2] = 'o'; grid[4] = 'o'; grid[6] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_o");
+}
+/**
+ * @brief Test case: Process win check command 8
+ */
+test(test_process_win_check_command8) {
+  resetGrid();
+  grid[0] = 'x'; grid[4] = 'x'; grid[8] = 'x';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_x");
+}
+/**
+ * @brief Test case: Process win check command 9
+ */
+test(test_process_win_check_command9) {
+  resetGrid();
+  grid[0] = 'x'; grid[4] = 'x'; grid[8] = 'x';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_x");
+}
+/**
+ * @brief Test case: Process win check command 10
+ */
+test(test_process_win_check_command10) {
+  resetGrid();
+  grid[0] = 'x'; grid[4] = 'x'; grid[8] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WD");
+}
+/**
+ * @brief Test case: Process win check command 11
+ */
+test(test_process_win_check_command11) {
+  resetGrid();
+  grid[0] = 'x'; grid[4] = 'x'; grid[8] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WD");
+}
+/**
+ * @brief Test case: Process win check command 12
+ */
+test(test_process_win_check_command12) {
+  resetGrid();
+  grid[0] = 'x'; grid[1] = 'x'; grid[2] = 'o';
+  grid[3] = 'o'; grid[4] = 'x'; grid[5] = 'x';
+  grid[6] = 'x'; grid[7] = 'o'; grid[8] = 'o';
+  String response = processCommand("WW");
+  assertEqual(response, "WA_d");
 }
 
 void setup() {

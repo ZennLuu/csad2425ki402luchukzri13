@@ -1,6 +1,7 @@
 import serial
 import sys
 import os
+import re
 
 # Check if the COM port argument is provided
 if len(sys.argv) != 2:
@@ -43,7 +44,16 @@ try:
                     file.write(data + "\n")
 
                 if data.startswith("Test summary"):
+                    match = re.search(r"(\d+) passed", data)
+                    if match:
+                        passed_tests_count = int(match.group(1))
+                        coverage = passed_tests_count/(9+2+1+4+1+2+4+1+7)
+                        coverage_percentege = "Coverage: " +  str(coverage*100) + "%\n"
+                        file.write(coverage_percentege)
+                        print(coverage_percentege)
                     break
 
 except serial.SerialException as e:
     print(f"Error: Could not open {serial_port}. {e}")
+
+sys.exit(0)

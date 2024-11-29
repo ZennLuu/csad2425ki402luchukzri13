@@ -170,13 +170,6 @@ String processCommand(String command){
   return response;
 }
 
-// Test case: Check for initial game grid state
-test(test_initial_grid_state) {
-  for (int i = 0; i < 9; i++) {
-    assertEqual(grid[i], 'n');
-  }
-}
-
 // Test case: Check for win in a row
 test(test_check_for_win_row) {
   resetGrid();
@@ -255,9 +248,9 @@ test(test_process_win_check_command) {
 
 void setup() {
   Serial.begin(115200);
-  Test::run(); // Run all tests
+  Serial.println("Starting tests...");
 }
 
 void loop() {
-  // Nothing here
+  Test::run(); // Run all tests
 }

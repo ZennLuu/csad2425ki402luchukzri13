@@ -646,16 +646,17 @@ namespace client
                     
                     serial.WriteLine(command);
 
-                    return serial.ReadLine();
+                    string response = serial.ReadLine();
+
+                    serial.Close();
+
+                    return response;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
                     if (serial.IsOpen)
                         serial.Close();
+                    MessageBox.Show(ex.Message);
                 }
             }
             return "Serial port isnt initialized.";

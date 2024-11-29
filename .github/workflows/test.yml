@@ -1,4 +1,4 @@
-name: Build and tests
+name: Test Server Code
 
 on:
   push:
@@ -8,25 +8,54 @@ on:
     branches:
       - develop
 
-jobs:
-  build:
-    runs-on: ubuntu-latest  # PlatformIO supports Linux, Windows, and macOS
-  
+jobs: 
+  tests:
+    runs-on: windows-latest
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Check out repo
+        uses: actions/checkout@v3
 
-    - name: Set up PlatformIO
-      uses: platformio/platformio-action@v2  # Set up PlatformIO
+      - name: Setup arduino-cli
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "C:\arduino-cli\arduino-cli.exe")) {
+            Invoke-WebRequest -Uri "https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Windows_64bit.zip" -OutFile "arduino-cli.zip"
+            Expand-Archive -Path "arduino-cli.zip" -DestinationPath "C:\arduino-cli"
+          }
+        
+      - name: Setup ESP32 core
+        shell: cmd
+        run: |
+          C:\arduino-cli\arduino-cli.exe config init
+          C:\arduino-cli\arduino-cli.exe config set board_manager.additional_urls "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
+          C:\arduino-cli\arduino-cli.exe core update-index
+          C:\arduino-cli\arduino-cli.exe core install esp32:esp32
+        
+      - name: Compile ESP32 Tests
+        shell: cmd
+        run: |
+          C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 test_server/test_server.ino
 
-    - name: Install dependencies
-      run: |
-        platformio lib install  # Install libraries specified in platformio.ini
+      - name: Upload ESP32 Tests
+              shell: cmd
+              run: |
+                C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 test_server/test_server.ino
+      
+      
 
-    - name: Build the project
-      run: |
-        platformio run  # Build the project
-
-    - name: Run unit tests
-      run: |
-        platformio test  # Run the tests defined in the test/ directory
+      - name: Run Unit Tests and Capture Output
+          run: |
+            arduino-cli upload -p COM1 --fqbn esp32:esp32:esp32 test_code.ino > test_results.log 2>&1
+  
+        - name: Process Test Results
+          run: |
+            $testResults = Get-Content "test_results.log"
+            
+            if ($testResults -match "Test failed") {
+              Write-Host "Tests failed!"
+              exit 1  # Fail the workflow if tests failed
+            } else {
+              Write-Host "All tests passed!"
+            }
+  

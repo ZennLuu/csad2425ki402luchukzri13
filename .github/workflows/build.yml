@@ -32,11 +32,12 @@ jobs:
           C:\arduino-cli\arduino-cli.exe core update-index
           C:\arduino-cli\arduino-cli.exe core install esp32:esp32
         
-      - name: Compile ESP32 project
+      - name: Compile Server/Tests
         shell: cmd
         run: |
           mkdir build
           C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 --output-dir build server/server.ino
+          C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 --output-dir build test_server/test_server.ino
       
       - name: Upload binaries
         uses: actions/upload-artifact@v3

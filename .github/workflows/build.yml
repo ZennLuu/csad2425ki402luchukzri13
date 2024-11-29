@@ -37,6 +37,8 @@ jobs:
         run: |
           mkdir build
           C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 --output-dir build server/server.ino
+
+          C:\arduino-cli\arduino-cli.exe lib install ArduinoUnit
           C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 --output-dir build test_server/test_server.ino
       
       - name: Upload binaries

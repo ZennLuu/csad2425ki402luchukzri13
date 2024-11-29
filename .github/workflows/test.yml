@@ -37,14 +37,9 @@ jobs:
         run: |
           C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 test_server/test_server.ino
 
-      - name: Upload ESP32 Tests
-        shell: cmd
-          run: |
-          C:\arduino-cli\arduino-cli.exe compile --fqbn esp32:esp32:esp32 test_server/test_server.ino
-
       - name: Run Unit Tests and Capture Output
           run: |
-            arduino-cli upload -p COM1 --fqbn esp32:esp32:esp32 test_code.ino > test_results.log 2>&1
+            arduino-cli upload -p COM1 --fqbn esp32:esp32:esp32 test_server/test_code.ino > test_results.log 2>&1
   
         - name: Process Test Results
           run: |

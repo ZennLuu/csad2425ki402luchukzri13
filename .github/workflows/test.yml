@@ -39,18 +39,18 @@ jobs:
 
       - name: Run Unit Tests and Capture Output
         shell: cmd
-          run: |
-            C:\arduino-cli\arduino-cli.exe upload -p COM1 --fqbn esp32:esp32:esp32 test_server/test_code.ino > test_results.log 2>&1
+        run: |
+          C:\arduino-cli\arduino-cli.exe upload -p COM1 --fqbn esp32:esp32:esp32 test_server/test_code.ino > test_results.log 2>&1
   
       - name: Process Test Results
         shell: cmd
-          run: |
-            $testResults = Get-Content "test_results.log"
-            
-            if ($testResults -match "Test failed") {
-              Write-Host "Tests failed!"
-              exit 1  # Fail the workflow if tests failed
-            } else {
-              Write-Host "All tests passed!"
-            }
+        run: |
+          $testResults = Get-Content "test_results.log"
+          
+          if ($testResults -match "Test failed") {
+            Write-Host "Tests failed!"
+            exit 1  # Fail the workflow if tests failed
+          } else {
+            Write-Host "All tests passed!
+          }
   

@@ -2,7 +2,7 @@
 REM Exit on error
 setlocal enabledelayedexpansion
 
-set ESP32ProjectPath=..\server
+set ESP32ProjectPath=..\test_server
 set Board=esp32:esp32:esp32
 set requiredCore=esp32:esp32
 
@@ -46,7 +46,7 @@ arduino-cli core update-index
 arduino-cli core install %requiredCore%
 
 :BUILD
-echo Building Server...
+echo Building Tests...
 cd %ESP32ProjectPath%
 arduino-cli compile --fqbn %Board% .
 
@@ -55,7 +55,25 @@ arduino-cli upload -p %comPortNumber% --fqbn %Board% .
 
 cd ..\ci
 
-echo Server build process completed successfully.
-endlocal
+python --version >nul 2>&1
+if errorlevel 1 (
+    echo Python is not installed or not in PATH. Please install Python and try again.
+    exit /b
+)
 
+pip --version >nul 2>&1
+if errorlevel 1 (
+    echo pip is not installed. Installing pip...
+    python -m ensurepip --upgrade
+    if errorlevel 1 (
+        echo Failed to install pip. Please install pip and try again.
+        exit /b
+    )
+)
+
+REM Install python dependencies and read serial output from board by python script.
+pip install -r pyRequirements.txt
+python readSerial.py %comPortNumber%
+echo Test process completed successfully.
+endlocal
 PAUSE

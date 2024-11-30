@@ -604,8 +604,16 @@ namespace client
                 try
                 {
                     string port = FindCH340ComPort();
-                    serial = new SerialPort(port, baud_rate);
-                    //l1.Content = $"Successfully connected on port: {port}";
+                    serial = new SerialPort(port, baud_rate)
+                    {
+                        DataBits = 8,
+                        Parity = Parity.None,
+                        StopBits = StopBits.One,
+                        Handshake = Handshake.None,
+                        NewLine = "\n",
+                        ReadTimeout = 2000,
+                        WriteTimeout = 2000
+                    };
                 }
                 catch (Exception ex)
                 {
